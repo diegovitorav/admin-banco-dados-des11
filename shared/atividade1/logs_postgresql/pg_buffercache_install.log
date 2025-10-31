@@ -1,0 +1,56 @@
+buffercache.sql  install_pg_buffer.sh
+[root@vm02 atividade1]# chmod +x install_pg_buffer.sh 
+[root@vm02 atividade1]# ./install_pg_buffer.sh 
+======================================
+Instalando extensão pg_buffercache
+======================================
+[1/2] Verificando diretório da extensão...
+[2/2] Compilando e instalando extensão...
+make -C ../../src/backend generated-headers
+make[1]: Entering directory '/tmp/postgresql-17.2/src/backend'
+make -C ../include/catalog generated-headers
+make[2]: Entering directory '/tmp/postgresql-17.2/src/include/catalog'
+make[2]: Nothing to be done for 'generated-headers'.
+make[2]: Leaving directory '/tmp/postgresql-17.2/src/include/catalog'
+make -C nodes generated-header-symlinks
+make[2]: Entering directory '/tmp/postgresql-17.2/src/backend/nodes'
+make[2]: Nothing to be done for 'generated-header-symlinks'.
+make[2]: Leaving directory '/tmp/postgresql-17.2/src/backend/nodes'
+make -C utils generated-header-symlinks
+make[2]: Entering directory '/tmp/postgresql-17.2/src/backend/utils'
+make -C adt jsonpath_gram.h
+make[3]: Entering directory '/tmp/postgresql-17.2/src/backend/utils/adt'
+make[3]: 'jsonpath_gram.h' is up to date.
+make[3]: Leaving directory '/tmp/postgresql-17.2/src/backend/utils/adt'
+make[2]: Leaving directory '/tmp/postgresql-17.2/src/backend/utils'
+make[1]: Leaving directory '/tmp/postgresql-17.2/src/backend'
+gcc -Wall -Wmissing-prototypes -Wpointer-arith -Wdeclaration-after-statement -Werror=vla -Wendif-labels -Wmissing-format-attribute -Wimplicit-fallthrough=3 -Wcast-function-type -Wshadow=compatible-local -Wformat-security -fno-strict-aliasing -fwrapv -fexcess-precision=standard -Wno-format-truncation -Wno-stringop-truncation -O2 -fPIC -fvisibility=hidden -I. -I. -I../../src/include  -D_GNU_SOURCE   -c -o pg_buffercache_pages.o pg_buffercache_pages.c
+gcc -Wall -Wmissing-prototypes -Wpointer-arith -Wdeclaration-after-statement -Werror=vla -Wendif-labels -Wmissing-format-attribute -Wimplicit-fallthrough=3 -Wcast-function-type -Wshadow=compatible-local -Wformat-security -fno-strict-aliasing -fwrapv -fexcess-precision=standard -Wno-format-truncation -Wno-stringop-truncation -O2 -fPIC -fvisibility=hidden -shared -o pg_buffercache.so  pg_buffercache_pages.o -L../../src/port -L../../src/common    -Wl,--as-needed -Wl,-rpath,'/usr/local/pgsql/lib',--enable-new-dtags -fvisibility=hidden 
+make -C ../../src/backend generated-headers
+make[1]: Entering directory '/tmp/postgresql-17.2/src/backend'
+make -C ../include/catalog generated-headers
+make[2]: Entering directory '/tmp/postgresql-17.2/src/include/catalog'
+make[2]: Nothing to be done for 'generated-headers'.
+make[2]: Leaving directory '/tmp/postgresql-17.2/src/include/catalog'
+make -C nodes generated-header-symlinks
+make[2]: Entering directory '/tmp/postgresql-17.2/src/backend/nodes'
+make[2]: Nothing to be done for 'generated-header-symlinks'.
+make[2]: Leaving directory '/tmp/postgresql-17.2/src/backend/nodes'
+make -C utils generated-header-symlinks
+make[2]: Entering directory '/tmp/postgresql-17.2/src/backend/utils'
+make -C adt jsonpath_gram.h
+make[3]: Entering directory '/tmp/postgresql-17.2/src/backend/utils/adt'
+make[3]: 'jsonpath_gram.h' is up to date.
+make[3]: Leaving directory '/tmp/postgresql-17.2/src/backend/utils/adt'
+make[2]: Leaving directory '/tmp/postgresql-17.2/src/backend/utils'
+make[1]: Leaving directory '/tmp/postgresql-17.2/src/backend'
+/bin/mkdir -p '/usr/local/pgsql/lib'
+/bin/mkdir -p '/usr/local/pgsql/share/extension'
+/bin/mkdir -p '/usr/local/pgsql/share/extension'
+/bin/install -c -m 755  pg_buffercache.so '/usr/local/pgsql/lib/pg_buffercache.so'
+/bin/install -c -m 644 ./pg_buffercache.control '/usr/local/pgsql/share/extension/'
+/bin/install -c -m 644 ./pg_buffercache--1.2.sql ./pg_buffercache--1.2--1.3.sql ./pg_buffercache--1.1--1.2.sql ./pg_buffercache--1.0--1.1.sql ./pg_buffercache--1.3--1.4.sql ./pg_buffercache--1.4--1.5.sql  '/usr/local/pgsql/share/extension/'
+✓ Extensão pg_buffercache instalada com sucesso.
+→ Criando extensão na base 'postgres'...
+CREATE EXTENSION
+✓ Extensão pg_buffercache ativada na base 'postgres'.
