@@ -21,7 +21,7 @@ Certifique-se de estar logado como `root` ou ter permissões de `sudo`.
 ```bash
 dnf install -y \
   gcc gcc-c++ make readline-devel zlib-devel wget \
-  libicu-devel bison flex sudo glibc-langpack-en
+  libicu-devel bison flex sudo glibc-langpack-en perl
 ```
 
 Esses pacotes garantem que o sistema tenha compiladores, bibliotecas de leitura, compressão e internacionalização necessárias para compilar o PostgreSQL.
