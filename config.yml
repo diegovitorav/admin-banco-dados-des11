@@ -1,9 +1,0 @@
-# config.yml - Configuração da VM CentOS com PostgreSQL 17
-
-box_image: "centos/stream9"
-vm_name: "vm02"
-vm_hostname: "vm02"
-network_ip: "192.168.56.15"
-vm_cpus: 2
-vm_memory: 2048
-ssh_host_port: 2222

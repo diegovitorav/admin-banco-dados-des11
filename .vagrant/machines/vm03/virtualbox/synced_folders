@@ -1,0 +1,1 @@
+{"rsync":{"/vagrant":{"type":"rsync","guestpath":"/vagrant","hostpath":"/home/diego/AmbienteDev/pessoal/github/RNP/Administracao de Banco de Dados/centos/shared","disabled":false,"__vagrantfile":true,"owner":"vagrant","group":"vagrant"}}}

@@ -2,27 +2,12 @@
 #
 # Script de instalação do PostgreSQL 17 no CentOS a partir do código fonte
 
-set -e
+set -eux
 
 # ==============================
 # Variáveis principais
 # ==============================
-PG_VERSION="17.2"
-PG_USER="postgres"
-PG_HOME="/home/${PG_USER}"
-PG_INSTALL_DIR="/usr/local/pgsql"
-PGBIN="${PG_INSTALL_DIR}/bin"
-DOWNLOAD_URL="https://ftp.postgresql.org/pub/source/v${PG_VERSION}/postgresql-${PG_VERSION}.tar.gz"
-SRC_DIR="/tmp/postgresql-${PG_VERSION}"
-TARBALL="/tmp/postgresql-${PG_VERSION}.tar.gz"
-PGDATA="/db/data"
-REGRESSION_LOG="/tmp/pg_regression.log"
-CONFIGURE_LOG="/tmp/pg_configure.log"
-MAKE_COMPILE_LOG="/tmp/pg_make.log"
-MAKE_INSTALL_LOG="/tmp/pg_install.log"
-
-# dependencias necessárias apenas para compilação
-PG_BUILD_DEPS="gcc gcc-c++ make bison flex perl" 
+source ./pg_env.sh
 
 echo "======================================"
 echo "PostgreSQL ${PG_VERSION} - Instalação no CentOS"
@@ -60,6 +45,7 @@ chown -R ${PG_USER}:${PG_USER} ${PG_HOME} ${PG_INSTALL_DIR} /db ${PGDATA}
   echo "export PGBIN=${PGBIN}"
   echo "export LANG=en_US.UTF-8"
   echo "export LC_ALL=en_US.UTF-8"
+  echo 'export PAGER="less -S"'
 } >> "${PG_HOME}/.bashrc"
 
 # ==============================
@@ -92,7 +78,13 @@ if [ -x "${PGBIN}/postgres" ]; then
   echo "[5/8] PostgreSQL já compilado em ${PGBIN}, pulando compilação."
 else
   echo "[5/8] Compilando PostgreSQL..."
-  ./configure --prefix=${PG_INSTALL_DIR} --without-icu 2>&1 | tee "${CONFIGURE_LOG}"
+  ./configure \
+    --prefix=${PG_INSTALL_DIR} \
+    --with-systemd \
+    --without-icu \
+    2>&1 \
+    | tee "${CONFIGURE_LOG}"
+    
   make -j"$(nproc)" 2>&1 | tee "${MAKE_COMPILE_LOG}"
 
   echo "→ Executando testes de regressão com 'make check'..."
@@ -153,13 +145,13 @@ echo "[7/8] Iniciando PostgreSQL..."
 # Se o PostgreSQL estiver rodando, pare ele. Se não estiver, tudo bem, continue.
 su - ${PG_USER} -c "${PGBIN}/pg_ctl -D ${PGDATA} -m fast stop" 2>/dev/null || true
 sleep 1
-su - ${PG_USER} -c "${PGBIN}/pg_ctl -D ${PGDATA} -l ${PG_HOME}/logfile start"
+su - ${PG_USER} -c "${PGBIN}/pg_ctl -D ${PGDATA} -l ${PGLOG} start"
 sleep 3
 
 if su - ${PG_USER} -c "${PGBIN}/pg_ctl -D ${PGDATA} status" > /dev/null 2>&1; then
   echo "✓ PostgreSQL ${PG_VERSION} instalado e iniciado com sucesso!"
 else
-  echo "⚠️ PostgreSQL instalado mas não está rodando. Verifique ${PG_HOME}/logfile"
+  echo "⚠️ PostgreSQL instalado mas não está rodando. Verifique  ${PGLOG}"
 fi
 
 echo ""
@@ -170,7 +162,7 @@ echo ""
 echo "Arquivos:"
 echo "  Binários: ${PGBIN}/"
 echo "  Dados:    ${PGDATA}"
-echo "  Logs:     ${PG_HOME}/logfile"
+echo "  Logs:     ${PGLOG}"
 echo ""
 echo "Comandos úteis:"
 echo "  pg_ctl status"
