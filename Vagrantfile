@@ -43,6 +43,11 @@ Vagrant.configure("2") do |cfg|
         vb.linked_clone = true
       end
 
+      # Adiciona disco somente para vm02
+      if vm[:vm_name] == "vm02"
+        node.vm.disk :disk, size: "20GB", primary: true
+      end
+
       node.vm.provision "shell", inline: <<-SHELL
         echo "==> Atualizando pacotes..."
         yum update -y

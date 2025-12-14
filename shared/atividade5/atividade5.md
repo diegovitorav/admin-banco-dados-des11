@@ -431,7 +431,6 @@ LOG: Ok, generating html report...
 
 ![Relatório gerado pelo pgbadger](imagens/imagem3.png)
 
-
 ---
 
 ## Atividade 5.g – Consultar tamanho da tabela
